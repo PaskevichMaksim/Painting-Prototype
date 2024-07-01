@@ -11,52 +11,32 @@ namespace UI
     [SerializeField]
     private ColorPickerController _colorPickerController;
 
-    private RawImage _svImage;
     private RectTransform _rectTransform,
       _pickerTransform;
 
     private void Awake()
     {
-      _svImage = GetComponent<RawImage>();
       _rectTransform = GetComponent<RectTransform>();
 
       _pickerTransform = _pickerImage.GetComponent<RectTransform>();
-      _pickerTransform.position = new Vector2(-(_rectTransform.sizeDelta.x *.5f), -(_rectTransform.sizeDelta.y *.5f));
     }
 
     private void UpdateColor (PointerEventData eventData)
     {
-      Vector3 position = _rectTransform.InverseTransformPoint(eventData.position);
-      float deltaX = _rectTransform.sizeDelta.x * .5f;
-      float deltaY = _rectTransform.sizeDelta.y * .5f;
+      RectTransformUtility.ScreenPointToLocalPointInRectangle(_rectTransform, eventData.position, eventData.pressEventCamera, out Vector2 localPoint);
 
-      if (position.x < -deltaX)
-      {
-        position.x = -deltaX;
-      } else if (position.x > deltaX)
-      {
-        position.x = deltaX;
-      }
-      
-      if (position.y < -deltaY)
-      {
-        position.y = -deltaY;
-      } else if (position.y > deltaY)
-      {
-        position.y = deltaY;
-      }
+      float deltaX = _rectTransform.sizeDelta.x * 0.5f;
+      float deltaY = _rectTransform.sizeDelta.y * 0.5f;
 
-      float x = position.x + deltaX;
-      float y = position.y + deltaY;
+      localPoint.x = Mathf.Clamp(localPoint.x, -deltaX, deltaX);
+      localPoint.y = Mathf.Clamp(localPoint.y, -deltaY, deltaY);
 
-      float xNormalized = x / _rectTransform.sizeDelta.x;
-      float yNormalized = y / _rectTransform.sizeDelta.y;
+      _pickerTransform.localPosition = localPoint;
+      float xNormalized = (localPoint.x + deltaX) / _rectTransform.sizeDelta.x;
+      float yNormalized = (localPoint.y + deltaY) / _rectTransform.sizeDelta.y;
 
-      _pickerTransform.localPosition = position;
       _pickerImage.color = Color.HSVToRGB(0, 0, 1 - yNormalized);
-      
       _colorPickerController.SetSV(xNormalized, yNormalized);
-
     }
 
     public void OnDrag (PointerEventData eventData)

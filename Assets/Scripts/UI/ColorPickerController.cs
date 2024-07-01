@@ -2,10 +2,17 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+
 namespace UI
 {
    public class ColorPickerController : MonoBehaviour
    {
+      public event Action ColorConfirmed;
+      
+      private const int MAX_INPUT_LENGTH = 6;
+      
+      public Color SelectedColor { get; private set; }
+      
       [SerializeField]
       private RawImage _hueImage,
          _satValImage,
@@ -14,101 +21,45 @@ namespace UI
       private Slider _hueSlider;
       [SerializeField]
       private TMP_InputField _hexInputField;
+      [SerializeField]
+      private RectTransform _colorPickerUI;
+      [SerializeField]
+      private Button _confirmButton;
 
+      private ColorPalette _colorPalette;
       private Texture2D _hueTexture,
          _svTexture,
          _outputTexture;
       private float _currentHue,
          _currentSat,
          _currentValue;
-
-      public float CurrentHue => _currentHue;
-      public float CurrentSat => _currentSat;
-      public float CurrentValue => _currentValue;
-   
-      [SerializeField]
-      private MeshRenderer _objectToChange;
-      private static readonly int baseColor = Shader.PropertyToID("_BaseColor");
-
+      
+      
       private void Awake()
       {
+         _colorPalette = new ColorPalette();
+         
          _hueSlider.onValueChanged.AddListener(UpdateSVImage);
          _hexInputField.onEndEdit.AddListener(OnTextInput);
+         _hexInputField.onValueChanged.AddListener(LimitHexInputLength);
+         _confirmButton.onClick.AddListener(OnConfirmButtonClicked);
       }
 
       private void Start()
       {
-         CreateHueImage();
-         CreateSvImage();
-         CreateOutputImage();
-         UpdateOutputColorImage();
-      }
-
-      private void CreateHueImage()
-      {
-         _hueTexture = new Texture2D(1, 16)
-         {
-            wrapMode = TextureWrapMode.Clamp,
-            name = "HueTexture"
-         };
-
-         for (int i = 0; i < _hueTexture.height; i++)
-         {
-            _hueTexture.SetPixel(0,i, Color.HSVToRGB((float)i / _hueTexture.height, 1, 0.05f));
-         }
-
-         _hueTexture.Apply();
-         _currentHue = 0;
-
+         _hueTexture = _colorPalette.CreateHueTexture(16);
+         _svTexture = _colorPalette.CreateSvTexture(16,16,_currentHue);
+         _outputTexture = _colorPalette.CreateOutputTexture(16, SelectedColor);
+         
          _hueImage.texture = _hueTexture;
-      }
-   
-      private void CreateSvImage()
-      {
-         _svTexture = new Texture2D(16, 16)
-         {
-            wrapMode = TextureWrapMode.Clamp,
-            name = "SatValTexture"
-         };
-
-         for (int i = 0; i < _svTexture.height; i++)
-         {
-            for (int j = 0; j < _svTexture.width; j++)
-            {
-               _svTexture.SetPixel(i,j,Color.HSVToRGB(_currentHue, (float)i / _svTexture.width, (float)j / _svTexture.height));
-            }
-         }
-
-         _svTexture.Apply();
-         _currentSat = 0;
-         _currentValue = 0;
-
          _satValImage.texture = _svTexture;
-      }
-   
-      private void CreateOutputImage()
-      {
-         _outputTexture = new Texture2D(1, 16)
-         {
-            wrapMode = TextureWrapMode.Clamp,
-            name = "OutputTexture"
-         };
-
-         Color currentColor = Color.HSVToRGB(_currentHue, _currentSat, _currentValue);
-
-         for (int i = 0; i < _outputTexture.height; i++)
-         {
-            _outputTexture.SetPixel(0,i, currentColor);
-         }
-
-         _outputTexture.Apply();
-
-         _outputImage.texture = _hueTexture;
+         _outputImage.texture = _outputTexture;
       }
 
       private void UpdateOutputColorImage()
       {
          Color currentColor = Color.HSVToRGB(_currentHue, _currentSat, _currentValue);
+         _colorPalette.UpdateSVTexture(_svTexture,_currentHue);
       
          for (int i = 0; i < _outputTexture.height; i++)
          {
@@ -116,9 +67,10 @@ namespace UI
          }
 
          _outputTexture.Apply();
-
+         _outputImage.texture = _outputTexture;
          _hexInputField.text = ColorUtility.ToHtmlStringRGB(currentColor);
-         _objectToChange.material.SetColor(baseColor, currentColor);
+
+         SelectedColor = currentColor;
       }
 
       public void SetSV (float saturation, float value)
@@ -133,28 +85,20 @@ namespace UI
       {
          _currentHue = _hueSlider.value;
 
-         for (int i = 0; i < _svTexture.height; i++)
-         {
-            for (int j = 0; j < _svTexture.width; j++)
-            {
-               _svTexture.SetPixel(i,j,Color.HSVToRGB(_currentHue, (float)i / _svTexture.width, (float)j / _svTexture.height));
-            }
-         }
-
-         _svTexture.Apply();
-      
-         UpdateOutputColorImage();
+        _colorPalette.UpdateSVTexture(_svTexture, _currentHue);
+        UpdateOutputColorImage();
       }
 
+      private void LimitHexInputLength (string input)
+      {
+         if (_hexInputField.text.Length > MAX_INPUT_LENGTH)
+         {
+            _hexInputField.text = _hexInputField.text.Substring(0, MAX_INPUT_LENGTH);
+         }
+      }
+      
       private void OnTextInput(string arg0)
       {
-         const int MAX_LENGTH = 6;
-         
-         if (_hexInputField.text.Length < MAX_LENGTH)
-         {
-            return;
-         }
-
          if (ColorUtility.TryParseHtmlString("#" + _hexInputField.text, out Color newColor))
          {
             Color.RGBToHSV(newColor,out _currentHue,out _currentSat, out _currentValue);
@@ -163,6 +107,31 @@ namespace UI
          _hueSlider.value = _currentHue;
          _hexInputField.text = "";
          UpdateOutputColorImage();
+      }
+
+      public void OpenColorPalette()
+      {
+         _colorPickerUI.gameObject.SetActive(true);
+         UpdateUIWithBrushColor();
+      }
+
+      private void CloseColorPalette()
+      {
+         _colorPickerUI.gameObject.SetActive(false);
+      }
+
+      private void UpdateUIWithBrushColor()
+      {
+         Color.RGBToHSV(SelectedColor, out _currentHue, out _currentSat, out _currentValue);
+         _hueSlider.value = _currentHue;
+         UpdateSVImage(_currentHue);
+      }
+      
+      private void OnConfirmButtonClicked()
+      {
+         SelectedColor = Color.HSVToRGB(_currentHue, _currentSat, _currentValue);
+         ColorConfirmed?.Invoke();
+         CloseColorPalette();
       }
    }
 }
