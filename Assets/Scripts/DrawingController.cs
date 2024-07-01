@@ -9,6 +9,12 @@ public class DrawingController : MonoBehaviour
 
     private TexturePainter _currentPainter;
 
+    public void SetBrushProperties(Color color, int size)
+    {
+        _brush.Color = color;
+        _brush.Size = size;
+    }
+    
     private void Update()
     {
         if (!Input.GetMouseButton(0))
