@@ -7,6 +7,8 @@ namespace UI
 {
    public class ColorPickerController : MonoBehaviour
    {
+      public static ColorPickerController Instance { get; private set; }
+      
       public event Action ColorConfirmed;
       
       private const int MAX_INPUT_LENGTH = 6;
@@ -37,6 +39,14 @@ namespace UI
       
       private void Awake()
       {
+         if (Instance == null)
+         {
+            Instance = this;
+         } else
+         {
+            Destroy(gameObject);
+         }
+         
          _colorPalette = new ColorPalette();
          
          _hueSlider.onValueChanged.AddListener(UpdateSVImage);

@@ -26,14 +26,16 @@ public class TexturePainter : MonoBehaviour
     {
       for (int j = -brushSize; j <= brushSize; j++)
       {
-        if (i * i + j * j <= brushSizeSquared)
+        if (i * i + j * j > brushSizeSquared)
         {
-          int px = x + i;
-          int py = y + j;
-          if (px >= 0 && px < _texture.width && py >= 0 && py < _texture.height)
-          {
-            _texture.SetPixel(px, py, brush.Color);
-          }
+          continue;
+        }
+
+        int px = x + i;
+        int py = y + j;
+        if (px >= 0 && px < _texture.width && py >= 0 && py < _texture.height)
+        {
+          _texture.SetPixel(px, py, brush.Color);
         }
       }
     }

@@ -2,23 +2,26 @@ using UnityEngine;
 
 public class DrawingController : MonoBehaviour
 {
+    public static DrawingController Instance { get; private set; }
+    
     [SerializeField]
     private Camera _mainCamera;
     
-    private Brush _brush = new Brush(Color.cyan, 10);
+    private readonly Brush _brush = new Brush(Color.cyan, 10);
 
     private TexturePainter _currentPainter;
 
-    public void SetBrushColor(Color color)
+    private void Awake()
     {
-        _brush.Color = color;
+        if (Instance == null)
+        {
+            Instance = this;
+        } else
+        {
+            Destroy(gameObject);
+        }
     }
-    
-    public void SetBrushSize(int size)
-    {
-        _brush.Size = size;
-    }
-    
+
     private void Update()
     {
         if (!Input.GetMouseButton(0))
@@ -59,6 +62,16 @@ public class DrawingController : MonoBehaviour
 
         Vector2 uv = CalculateSphereUV(hit);
         _currentPainter.Paint(uv, _brush);
+    }
+    
+    public void SetBrushColor(Color color)
+    {
+        _brush.Color = color;
+    }
+    
+    public void SetBrushSize(int size)
+    {
+        _brush.Size = size;
     }
 
     private Vector2 CalculateSphereUV (RaycastHit hit)

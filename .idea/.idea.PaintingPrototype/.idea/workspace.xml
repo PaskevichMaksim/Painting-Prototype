@@ -6,8 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="d7f90536-5afc-4f02-b424-9628a589fd7f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.PaintingPrototype/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.PaintingPrototype/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/MainScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/MainScene.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/DrawingController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DrawingController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/TexturePainter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/TexturePainter.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/BrushUIController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/BrushUIController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/ColorPickerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/ColorPickerController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/SvImageController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/SvImageController.cs" afterDir="false" />
@@ -101,7 +101,7 @@
       <option name="presentableId" value="Default" />
       <updated>1719837000420</updated>
       <workItem from="1719837001491" duration="13114000" />
-      <workItem from="1719863998411" duration="5955000" />
+      <workItem from="1719863998411" duration="7048000" />
     </task>
     <servers />
   </component>

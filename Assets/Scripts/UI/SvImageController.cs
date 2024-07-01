@@ -8,8 +8,6 @@ namespace UI
   {
     [SerializeField]
     private Image _pickerImage;
-    [SerializeField]
-    private ColorPickerController _colorPickerController;
 
     private RectTransform _rectTransform,
       _pickerTransform;
@@ -36,7 +34,7 @@ namespace UI
       float yNormalized = (localPoint.y + deltaY) / _rectTransform.sizeDelta.y;
 
       _pickerImage.color = Color.HSVToRGB(0, 0, 1 - yNormalized);
-      _colorPickerController.SetSV(xNormalized, yNormalized);
+      ColorPickerController.Instance.SetSV(xNormalized, yNormalized);
     }
 
     public void OnDrag (PointerEventData eventData)

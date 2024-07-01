@@ -7,11 +7,7 @@ namespace UI
     {
         private const float MIN_SIZE = 1f;
         private const float MAX_SIZE = 20f;
-    
-        [SerializeField]
-        private DrawingController _drawingController;
-        [SerializeField]
-        private ColorPickerController _colorPickerController;
+        
         [SerializeField]
         private Slider _sizeSlider;
         [SerializeField]
@@ -22,19 +18,19 @@ namespace UI
             _sizeSlider.value = 0.5f;
             _sizeSlider.onValueChanged.AddListener(OnSizeSliderChanged);
             _selectButton.onClick.AddListener(OnSelectButtonClick);
-            _colorPickerController.ColorConfirmed += OnColorConfirmed;
+            ColorPickerController.Instance.ColorConfirmed += OnColorConfirmed;
             UpdateBrushSize();
         }
 
         private void OnDestroy()
         {
-            _colorPickerController.ColorConfirmed -= OnColorConfirmed;
+            ColorPickerController.Instance.ColorConfirmed -= OnColorConfirmed;
         }
     
         private void OnSelectButtonClick()
         {
             _selectButton.gameObject.SetActive(false);
-            _colorPickerController.OpenColorPalette();
+            ColorPickerController.Instance.OpenColorPalette();
         }
     
 
@@ -45,7 +41,7 @@ namespace UI
 
         private void OnColorConfirmed()
         {
-            _drawingController.SetBrushColor(_colorPickerController.SelectedColor);
+            DrawingController.Instance.SetBrushColor(ColorPickerController.Instance.SelectedColor);
             _selectButton.gameObject.SetActive(true);
         }
     
@@ -53,7 +49,7 @@ namespace UI
         {
             float normalizedValue = _sizeSlider.value;
             float size = Mathf.Lerp(MIN_SIZE, MAX_SIZE, normalizedValue);
-            _drawingController.SetBrushSize(Mathf.RoundToInt(size));
+            DrawingController.Instance.SetBrushSize(Mathf.RoundToInt(size));
         }
     }
 }
