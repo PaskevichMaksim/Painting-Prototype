@@ -4,8 +4,8 @@ public class DrawingController : MonoBehaviour
 {
     [SerializeField]
     private Camera _mainCamera;
-    [SerializeField]
-    private Brush _brush = new Brush(Color.green, 10);
+    
+    private Brush _brush = new Brush(Color.cyan, 10);
 
     private TexturePainter _currentPainter;
 

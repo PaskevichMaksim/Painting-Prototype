@@ -7,6 +7,7 @@
     <list default="true" id="d7f90536-5afc-4f02-b424-9628a589fd7f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.PaintingPrototype/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.PaintingPrototype/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/DrawingController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DrawingController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/BrushUIController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/BrushUIController.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -92,7 +93,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1719837000420</updated>
-      <workItem from="1719837001491" duration="5856000" />
+      <workItem from="1719837001491" duration="7240000" />
     </task>
     <servers />
   </component>
