@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class DrawingController : MonoBehaviour
@@ -10,16 +12,23 @@ public class DrawingController : MonoBehaviour
     private readonly Brush _brush = new Brush(Color.cyan, 10);
 
     private TexturePainter _currentPainter;
+    private Texture2D _drawingTexture;
+    private Stack<Color []> _undoStack = new Stack<Color []>(5);
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        } else
+        if (Instance != null)
         {
             Destroy(gameObject);
+            return;
         }
+
+        Instance = this;
+    }
+
+    private void Start()
+    {
+        _drawingTexture = new Texture2D(512, 512);
     }
 
     private void Update()
@@ -53,11 +62,21 @@ public class DrawingController : MonoBehaviour
             }
 
             _currentPainter.InitializeTexture(renderer);
+            _drawingTexture = _currentPainter.GetTexture();
         }
 
         if (hit.collider is not SphereCollider)
         {
             return;
+        }
+
+        if (_undoStack.Count < 5)
+        {
+            _undoStack.Push((Color[])_drawingTexture.GetPixels().Clone());
+        } else
+        {
+            _undoStack.Pop();
+            _undoStack.Push((Color[])_drawingTexture.GetPixels().Clone());
         }
 
         Vector2 uv = CalculateSphereUV(hit);
@@ -83,5 +102,32 @@ public class DrawingController : MonoBehaviour
         float v = 1.0f - (0.5f - Mathf.Asin(normal.y) / Mathf.PI);
 
         return new Vector2(u, v);
+    }
+
+    public void UndoLastAction()
+    {
+        if (_undoStack.Count <= 0)
+        {
+            return;
+        }
+
+        Color [] previousPixels = _undoStack.Pop();
+        _drawingTexture.SetPixels(previousPixels);
+        _drawingTexture.Apply();
+        _currentPainter.SetTexture(_drawingTexture);
+    }
+
+    public void ClearDrawing()
+    {
+        Color [] cleaPixels = new Color[_drawingTexture.width * _drawingTexture.height];
+
+        for (int i = 0; i < cleaPixels.Length; i++)
+        {
+            cleaPixels[i] = Color.white;
+            
+        }
+        _drawingTexture.SetPixels(cleaPixels);
+        _drawingTexture.Apply();
+        _currentPainter.SetTexture(_drawingTexture);
     }
 }
