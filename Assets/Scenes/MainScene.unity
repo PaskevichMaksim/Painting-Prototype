@@ -786,7 +786,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _saveButton: {fileID: 1110345700}
   _loadButton: {fileID: 1645959818}
-  _texturePainter: {fileID: 535285744}
+  _textureManager: {fileID: 535285746}
 --- !u!1 &323559369
 GameObject:
   m_ObjectHideFlags: 0
@@ -1518,6 +1518,8 @@ GameObject:
   - component: {fileID: 535285739}
   - component: {fileID: 535285738}
   - component: {fileID: 535285744}
+  - component: {fileID: 535285746}
+  - component: {fileID: 535285745}
   m_Layer: 0
   m_Name: PaintableSphere
   m_TagString: Untagged
@@ -1621,6 +1623,31 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bac0f9110eddeab419932863bfed2643, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &535285745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 535285737}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3dd102e72cd349f448ddfa507be0df16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speed: 30
+--- !u!114 &535285746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 535285737}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4af4f36da1f322409063e453065010f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &574990553

@@ -7,7 +7,8 @@
     <list default="true" id="d7f90536-5afc-4f02-b424-9628a589fd7f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.PaintingPrototype/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.PaintingPrototype/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/DrawingController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DrawingController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/SaveLoadManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/SaveLoadManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/TexturePainter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/TexturePainter.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/SaveLoadUI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/SaveLoadUI.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

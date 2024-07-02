@@ -9,7 +9,7 @@ namespace UI
         [SerializeField]
         private Button _loadButton;
         [SerializeField]
-        private TexturePainter _texturePainter;
+        private TextureManager _textureManager;
 
         private void Awake()
         {
@@ -19,7 +19,7 @@ namespace UI
 
         private void SaveDrawing()
         {
-            SaveLoadManager.Instance.SaveTexture(_texturePainter.GetTexture());
+            SaveLoadManager.Instance.SaveTexture(_textureManager.GetTexture());
         }
         
         private void LoadDrawing()
@@ -28,7 +28,7 @@ namespace UI
 
             if (loadedTexture != null)
             {
-                _texturePainter.SetTexture(loadedTexture);
+                _textureManager.SetTexture(loadedTexture);
             }
         }
     }

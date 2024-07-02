@@ -13,6 +13,7 @@ public class DrawingController : MonoBehaviour
     
     private readonly Brush _brush = new Brush(Color.cyan, 10);
     private TexturePainter _currentPainter;
+    private TextureManager _currentTextureManager;
     private Texture2D _drawingTexture;
 
     private void Awake()
@@ -53,11 +54,13 @@ public class DrawingController : MonoBehaviour
 
         SaveTextureState();
 
-        if (hit.collider is SphereCollider)
+        if (hit.collider is not SphereCollider)
         {
-            Vector2 uv = CalculateSphereUV(hit);
-            _currentPainter.Paint(uv, _brush);
+            return;
         }
+
+        Vector2 uv = CalculateSphereUV(hit);
+        _currentPainter.Paint(uv, _brush);
     }
 
     private bool TryGetHit(out RaycastHit hit)
@@ -74,17 +77,12 @@ public class DrawingController : MonoBehaviour
             return false;
         }
 
-        if (_currentPainter == null || _currentPainter.gameObject != renderer.gameObject)
+        if (_currentTextureManager == null || _currentTextureManager.gameObject != renderer.gameObject)
         {
+            _currentTextureManager = renderer.GetComponent<TextureManager>();
+            _currentTextureManager.InitializeTexture(renderer);
             _currentPainter = renderer.GetComponent<TexturePainter>();
-
-            if (_currentPainter == null)
-            {
-                _currentPainter = renderer.gameObject.AddComponent<TexturePainter>();
-            }
-
-            _currentPainter.InitializeTexture(renderer);
-            _drawingTexture = _currentPainter.GetTexture();
+            _drawingTexture = _currentTextureManager.GetTexture();
         }
 
         return true;
@@ -122,13 +120,15 @@ public class DrawingController : MonoBehaviour
 
     public void UndoLastAction()
     {
-        if (_undoStack.Count > 0)
+        if (_undoStack.Count <= 0)
         {
-            Color[] previousPixels = _undoStack.Pop();
-            _drawingTexture.SetPixels(previousPixels);
-            _drawingTexture.Apply();
-            _currentPainter.SetTexture(_drawingTexture);
+            return;
         }
+
+        Color[] previousPixels = _undoStack.Pop();
+        _drawingTexture.SetPixels(previousPixels);
+        _drawingTexture.Apply();
+        _currentTextureManager.SetTexture(_drawingTexture);
     }
 
     public void ClearDrawing()
@@ -136,10 +136,10 @@ public class DrawingController : MonoBehaviour
         Color[] clearPixels = new Color[_drawingTexture.width * _drawingTexture.height];
         for (int i = 0; i < clearPixels.Length; i++)
         {
-            clearPixels[i] = Color.clear;
+            clearPixels[i] = Color.white;
         }
         _drawingTexture.SetPixels(clearPixels);
         _drawingTexture.Apply();
-        _currentPainter.SetTexture(_drawingTexture);
+        _currentTextureManager.SetTexture(_drawingTexture);
     }
 }
