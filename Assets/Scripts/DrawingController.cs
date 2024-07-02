@@ -36,13 +36,24 @@ public class DrawingController : MonoBehaviour
     {
         if (Input.GetMouseButton(0))
         {
-            HandleDrawing();
+            HandleDrawing(Input.mousePosition);
+        } else if(Input.touchCount > 0)
+        {
+            HandleTouchDrawing();
+        }
+    }
+    
+    private void HandleTouchDrawing()
+    {
+        if (Input.GetTouch(0).phase == TouchPhase.Moved || Input.GetTouch(0).phase == TouchPhase.Stationary)
+        {
+            HandleDrawing(Input.GetTouch(0).position);
         }
     }
 
-    private void HandleDrawing()
+    private void HandleDrawing(Vector3 screenPosition)
     {
-        if (!TryGetHit(out RaycastHit hit))
+        if (!TryGetHit(screenPosition, out RaycastHit hit))
         {
             return;
         }
@@ -63,9 +74,9 @@ public class DrawingController : MonoBehaviour
         _currentPainter.Paint(uv, _brush);
     }
 
-    private bool TryGetHit(out RaycastHit hit)
+    private bool TryGetHit(Vector3 screenPosition, out RaycastHit hit)
     {
-        Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
+        Ray ray = _mainCamera.ScreenPointToRay(screenPosition);
         return Physics.Raycast(ray, out hit);
     }
 
