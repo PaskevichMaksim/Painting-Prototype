@@ -1,6 +1,5 @@
 using System.IO;
 using UnityEngine;
-using File = UnityEngine.Windows.File;
 
 public class SaveLoadManager : MonoBehaviour
 {

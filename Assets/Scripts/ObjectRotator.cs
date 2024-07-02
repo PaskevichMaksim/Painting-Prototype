@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ObjectRotator : MonoBehaviour
 {
-    [SerializeField]
+  [SerializeField]
     private float _speed = 30f;
 
     private Vector3 _lastMousePosition;
@@ -25,7 +25,7 @@ public class ObjectRotator : MonoBehaviour
       {
         _isRotating = false;
       }
-
+ 
       if (_isRotating)
       {
         RotateObject();

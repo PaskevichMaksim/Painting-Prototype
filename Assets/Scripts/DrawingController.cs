@@ -37,7 +37,7 @@ public class DrawingController : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
             HandleDrawing(Input.mousePosition);
-        } else if(Input.touchCount > 0)
+        } else if(Input.touchCount == 1)
         {
             HandleTouchDrawing();
         }
