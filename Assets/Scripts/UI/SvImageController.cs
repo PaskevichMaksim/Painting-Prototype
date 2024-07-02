@@ -4,22 +4,20 @@ using UnityEngine.UI;
 
 namespace UI
 {
-  public class SvImageController : MonoBehaviour,IDragHandler,IPointerClickHandler
+  public class SvImageController : MonoBehaviour, IDragHandler, IPointerClickHandler
   {
     [SerializeField]
     private Image _pickerImage;
 
-    private RectTransform _rectTransform,
-      _pickerTransform;
+    private RectTransform _rectTransform, _pickerTransform;
 
     private void Awake()
     {
       _rectTransform = GetComponent<RectTransform>();
-
       _pickerTransform = _pickerImage.GetComponent<RectTransform>();
     }
 
-    private void UpdateColor (PointerEventData eventData)
+    private void UpdateColor(PointerEventData eventData)
     {
       RectTransformUtility.ScreenPointToLocalPointInRectangle(_rectTransform, eventData.position, eventData.pressEventCamera, out Vector2 localPoint);
 
@@ -37,12 +35,12 @@ namespace UI
       ColorPickerController.Instance.SetSV(xNormalized, yNormalized);
     }
 
-    public void OnDrag (PointerEventData eventData)
+    public void OnDrag(PointerEventData eventData)
     {
       UpdateColor(eventData);
     }
 
-    public void OnPointerClick (PointerEventData eventData)
+    public void OnPointerClick(PointerEventData eventData)
     {
       UpdateColor(eventData);
     }

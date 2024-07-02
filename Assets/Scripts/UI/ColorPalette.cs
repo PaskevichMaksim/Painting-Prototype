@@ -39,7 +39,7 @@ namespace UI
       {
         for (int j = 0; j < svTexture.width; j++)
         {
-          svTexture.SetPixel(i, j, Color.HSVToRGB(hue, (float)i / svTexture.width, (float)j / svTexture.height));
+          svTexture.SetPixel(j, i, Color.HSVToRGB(hue, (float)j / svTexture.width, (float)i / svTexture.height));
         }
       }
 
