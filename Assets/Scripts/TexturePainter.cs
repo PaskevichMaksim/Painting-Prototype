@@ -41,4 +41,15 @@ public class TexturePainter : MonoBehaviour
     }
     _texture.Apply();
   }
+
+  public Texture2D GetTexture()
+  {
+    return _texture;
+  }
+
+  public void SetTexture (Texture2D texture)
+  {
+    _texture = texture;
+    GetComponent<Renderer>().material.mainTexture = _texture;
+  }
 }
