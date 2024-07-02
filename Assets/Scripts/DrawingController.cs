@@ -63,7 +63,6 @@ public class DrawingController : MonoBehaviour
             return;
         }
 
-        SaveTextureState();
 
         if (hit.collider is not SphereCollider)
         {
@@ -72,6 +71,8 @@ public class DrawingController : MonoBehaviour
 
         Vector2 uv = CalculateSphereUV(hit);
         _currentPainter.Paint(uv, _brush);
+        
+        SaveTextureState();
     }
 
     private bool TryGetHit(Vector3 screenPosition, out RaycastHit hit)
